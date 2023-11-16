@@ -4,6 +4,10 @@
 }
 
 .container {
+}
+
+.wheel-container {
+  padding: 15px;
   background-color: #3D3B49;
 }
 
@@ -107,7 +111,7 @@
 .prize::after {
   content: '';
   position: absolute;
-  top: calc(var(--size) / 12);
+  bottom: calc(var(--size) / 12);
   left: calc(var(--size) / 80);
   width: calc(var(--size) / 45);
   height: calc(var(--size) / 45);

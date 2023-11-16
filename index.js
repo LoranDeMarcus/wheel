@@ -10,8 +10,38 @@ function generateColor() {
   return '#' + x16color
 }
 
-function setImage() {
+const audio = new Audio('tick.mp3');  // Create audio object and load desired file.
 
+function playSound() {
+  // Stop and rewind the sound (stops it if already playing).
+  audio.pause();
+  audio.currentTime = 0;
+
+  // Play the sound.
+  audio.play();
+}
+const links = [
+  {
+    name: 'Шоколад',
+    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/236/h/84f3c166be3e11ce35acfaa61556756a.png',
+  },
+  {
+    name: 'iPhone 15',
+    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/136/h/d66ac740562146140c9cf815a13c3ddf.png',
+  },
+  {
+    name: 'Миксер',
+    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/52/h/1fe3825e90934c86047c2bb4286b309a.png',
+  },
+  {
+    name: 'Планетарный миксер',
+    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/101/h/db86244dd68019151f9352bccf47d073.png',
+  },
+]
+
+function getLinkByName(links, name) {
+  const foundLink = links.find(link => link.name.toLowerCase().includes(name.toLowerCase()))
+  return foundLink ? foundLink.link : null
 }
 
 $(document).ready(function () {
@@ -69,7 +99,6 @@ $(document).ready(function () {
   var formButton = []
 
   for (let formKey in formClasses) {
-    console.log('formKey', formKey)
     if ($('.' + formClasses[formKey]).eq(1).find('form').length) {
       form[formKey] = $('.' + formClasses[formKey]).eq(1).find('form')
       wheelBlock[formKey] = document.querySelectorAll('.' + formClasses[formKey])[0]
@@ -87,11 +116,14 @@ $(document).ready(function () {
       titlePrizes[formKey].each(function (i, e) {
         let title = $(e).text().trim()
         const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
+        const name = $(e).find('.offer-title').text().trim()
         if (title) {
+          const image = getLinkByName(links, name)
+          console.log(image)
           if (!prizes[formKey]) prizes[formKey] = []
           // let c = typeof (wheelColors) != 'undefined' && wheelColors !== null && wheelColors[i] ? wheelColors[i] : generateColor()
           const c = wheelColors[i % wheelColors.length]
-          prizes[formKey].push({ text: title, color: c, chance: chance })
+          prizes[formKey].push({ text: title, color: c, chance: chance, image })
         }
       })
     }
@@ -122,7 +154,7 @@ $(document).ready(function () {
     const createPrizeNodes = () => {
       console.log(prizes)
       // обрабатываем каждую подпись
-      prizes[formKey].forEach(({ text, color, reaction }, i) => {
+      prizes[formKey].forEach(({ text, color, reaction, image }, i) => {
         // каждой из них назначаем свой угол поворота
         rotation[formKey] = ((prizeSlice[formKey] * i) * -1) - prizeOffset[formKey]
         // добавляем код с размещением текста на страницу в конец блока spinner
@@ -132,8 +164,8 @@ $(document).ready(function () {
           `<li class="prize" data-reaction=${ reaction } style="--rotate: ${ rotation[formKey] }deg">
             <div class="prize-container">
               <span class="text">${ text }</span>
-              <img class="image" src="https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/136/h/d66ac740562146140c9cf815a13c3ddf.png" alt="" />
-            </div> 
+              ${image ? `<img class="image" src="${image}" alt="" />` : ''}
+        </div> 
       </li>`,
         )
       })
@@ -181,6 +213,7 @@ $(document).ready(function () {
       const b = values[1]
       let rad = Math.atan2(b, a)
 
+
       if (rad < 0) rad += (2 * Math.PI)
 
       const angle = Math.round(rad * (180 / Math.PI))
@@ -192,7 +225,7 @@ $(document).ready(function () {
         // убираем анимацию язычка
         ticker[formKey].style.animation = 'none'
         // и через 10 миллисекунд отменяем это, чтобы он вернулся в первоначальное положение
-        setTimeout(() => ticker[formKey].style.animation = null, 10000)
+        setTimeout(() => ticker[formKey].style.animation = null, 10)
         // после того, как язычок прошёл сектор - делаем его текущим
         currentSlice[formKey] = slice
       }
@@ -259,8 +292,6 @@ $(document).ready(function () {
 
     // подготавливаем всё к первому запуску
     setupWheel()
-
-    console.log('formButton', formButton)
 
     //submit формы по клику кнопке
     formButton[formKey].on('click', function (e) {
