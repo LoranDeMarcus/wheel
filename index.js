@@ -119,7 +119,6 @@ $(document).ready(function () {
         const name = $(e).find('.offer-title').text().trim()
         if (title) {
           const image = getLinkByName(links, name)
-          console.log(image)
           if (!prizes[formKey]) prizes[formKey] = []
           // let c = typeof (wheelColors) != 'undefined' && wheelColors !== null && wheelColors[i] ? wheelColors[i] : generateColor()
           const c = wheelColors[i % wheelColors.length]
@@ -152,7 +151,6 @@ $(document).ready(function () {
 
     // расставляем текст по секторам
     const createPrizeNodes = () => {
-      console.log(prizes)
       // обрабатываем каждую подпись
       prizes[formKey].forEach(({ text, color, reaction, image }, i) => {
         // каждой из них назначаем свой угол поворота
@@ -213,7 +211,6 @@ $(document).ready(function () {
       const b = values[1]
       let rad = Math.atan2(b, a)
 
-
       if (rad < 0) rad += (2 * Math.PI)
 
       const angle = Math.round(rad * (180 / Math.PI))
@@ -228,14 +225,17 @@ $(document).ready(function () {
         setTimeout(() => ticker[formKey].style.animation = null, 10)
         // после того, как язычок прошёл сектор - делаем его текущим
         currentSlice[formKey] = slice
+        playSound()
       }
+
       // запускаем анимацию
       tickerAnim[formKey] = requestAnimationFrame(runTickerAnimation)
     }
 
     // функция выбора призового сектора
     const selectPrize = () => {
-      const selected = selectSector(prizes[formKey])
+      const selected = Math.floor(rotation / prizeSlice)
+      // const selected = selectSector(prizes[formKey])
       console.log(selected)
       prizeNodes[formKey][selected].classList.add(selectedClass)
       setPrize(selected)
