@@ -139,8 +139,8 @@
 }
 
 .image {
-  width: 60px;
-  height: 60px;
+  width: calc(var(--size) / 6);
+  height: calc(var(--size) / 6);
   object-fit: contain;
 }
 

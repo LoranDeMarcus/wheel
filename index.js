@@ -10,16 +10,19 @@ function generateColor() {
   return '#' + x16color
 }
 
-const audio = new Audio('tick.mp3');  // Create audio object and load desired file.
+const audio = new Audio('tick.mp3')  // Create audio object and load desired file.
+
+const mod = (n, m) => (n % m + m) % m
 
 function playSound() {
   // Stop and rewind the sound (stops it if already playing).
-  audio.pause();
-  audio.currentTime = 0;
+  audio.pause()
+  audio.currentTime = 0
 
   // Play the sound.
-  audio.play();
+  audio.play()
 }
+
 const links = [
   {
     name: 'Шоколад',
@@ -68,6 +71,7 @@ $(document).ready(function () {
     '#FE8F00',
   ]
 
+  var selected = -1
   var prizes = []
   var form = []
   var wheelBlock = []
@@ -113,16 +117,19 @@ $(document).ready(function () {
     //заполняем призы и добавляем рандомные цвета
     titlePrizes[formKey] = form[formKey].find(titlePrizesSelector)
     if (titlePrizes[formKey].length > 0) {
+      const defaultChance = Math.floor(100 / titlePrizes[formKey].length)
       titlePrizes[formKey].each(function (i, e) {
         let title = $(e).text().trim()
-        const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
+        // const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
         const name = $(e).find('.offer-title').text().trim()
         if (title) {
           const image = getLinkByName(links, name)
+          const chance = image ? 0.0001 : defaultChance
+          console.log(chance)
           if (!prizes[formKey]) prizes[formKey] = []
           // let c = typeof (wheelColors) != 'undefined' && wheelColors !== null && wheelColors[i] ? wheelColors[i] : generateColor()
           const c = wheelColors[i % wheelColors.length]
-          prizes[formKey].push({ text: title, color: c, chance: chance, image })
+          prizes[formKey].push({ text: title, color: c, chance, image })
         }
       })
     }
@@ -162,7 +169,7 @@ $(document).ready(function () {
           `<li class="prize" data-reaction=${ reaction } style="--rotate: ${ rotation[formKey] }deg">
             <div class="prize-container">
               <span class="text">${ text }</span>
-              ${image ? `<img class="image" src="${image}" alt="" />` : ''}
+              ${ image ? `<img class="image" src="${ image }" alt="" />` : '' }
         </div> 
       </li>`,
         )
@@ -198,8 +205,6 @@ $(document).ready(function () {
 
     // определяем количество оборотов, которое сделает наше колесо
     const spinertia = (min, max) => {
-      min = Math.ceil(min)
-      max = Math.floor(max)
       return Math.floor(Math.random() * (max - min + 1)) + min
     }
 
@@ -234,9 +239,8 @@ $(document).ready(function () {
 
     // функция выбора призового сектора
     const selectPrize = () => {
-      const selected = Math.floor(rotation / prizeSlice)
-      // const selected = selectSector(prizes[formKey])
-      console.log(selected)
+      selected = selectSector(prizes[formKey])
+      console.log('selected', selected)
       prizeNodes[formKey][selected].classList.add(selectedClass)
       setPrize(selected)
     }
@@ -257,10 +261,16 @@ $(document).ready(function () {
 
     //запускаем колесо
     function startWheel() {
+      // выбираем приз
+      selectPrize()
       // делаем её недоступной для нажатия
       formButton[formKey].prop('disabled', true)
+      // расчитываем максимальное число диапазона сектора
+      const maxPrizeSlice = selected >= prizeNodes[formKey].length ? 0 : selected + 1
+      // задаем дополнительное количество оборотов
+      const rotates =  (spinertia(3, 9) * 360)
       // задаём начальное вращение колеса
-      rotation[formKey] = Math.floor(Math.random() * 360 + spinertia(2000, 5000))
+      rotation[formKey] = spinertia(prizeSlice[formKey] * selected, prizeSlice[formKey] * maxPrizeSlice - 2) + rotates
       // убираем прошлый приз
       prizeNodes[formKey].forEach((prize) => prize.classList.remove(selectedClass))
       // добавляем колесу класс is-spinning, с помощью которого реализуем нужную отрисовку
@@ -279,8 +289,6 @@ $(document).ready(function () {
       cancelAnimationFrame(tickerAnim[formKey])
       // получаем текущее значение поворота колеса
       rotation[formKey] %= 360
-      // выбираем приз
-      selectPrize()
       // убираем класс, который отвечает за вращение
       wheel[formKey].classList.remove(spinClass)
       // отправляем в CSS новое положение поворота колеса
