@@ -83,6 +83,7 @@
   transform: rotate(calc(var(--rotate, 25) * 1deg));
   /* рисуем круглую обводку, а всё, что не поместится, — будет скрыто за кругом */
   border-radius: 50%;
+  outline: 3px solid #ffffff;
 }
 
 /* всё, что внутри этого блока, будет находиться в области сетки с названием spinner */
@@ -109,13 +110,24 @@
   position: relative;
 }
 
+.prize::before {
+  content: '';
+  position: absolute;
+  bottom: calc(var(--size) / 12.7);
+  left: calc(var(--size) / 220);
+  width: calc(var(--size) / 28);
+  height: calc(var(--size) / 28);
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
 .prize::after {
   content: '';
   position: absolute;
   bottom: calc(var(--size) / 12);
-  left: calc(var(--size) / 80);
-  width: calc(var(--size) / 45);
-  height: calc(var(--size) / 45);
+  left: calc(var(--size) / 120);
+  width: calc(var(--size) / 40);
+  height: calc(var(--size) / 40);
   border-radius: 50%;
   background-color: #000;
 }

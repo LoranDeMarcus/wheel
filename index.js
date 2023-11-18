@@ -27,24 +27,28 @@ const links = [
   {
     name: 'Шоколад',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/236/h/84f3c166be3e11ce35acfaa61556756a.png',
+    chance: 0.0001,
   },
   {
     name: 'iPhone 15',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/136/h/d66ac740562146140c9cf815a13c3ddf.png',
+    chance: 0.2,
   },
   {
     name: 'Миксер',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/52/h/1fe3825e90934c86047c2bb4286b309a.png',
+    chance: 0.0001,
   },
   {
     name: 'Планетарный миксер',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/101/h/db86244dd68019151f9352bccf47d073.png',
+    chance: 0.0001,
   },
 ]
 
-function getLinkByName(links, name) {
+function getByName(links, name) {
   const foundLink = links.find(link => link.name.toLowerCase().includes(name.toLowerCase()))
-  return foundLink ? foundLink.link : null
+  return { image: foundLink ? foundLink.link : null, chance: foundLink ? foundLink.chance : 0 }
 }
 
 $(document).ready(function () {
@@ -120,14 +124,11 @@ $(document).ready(function () {
       const defaultChance = Math.floor(100 / (titlePrizes[formKey].length - links.length))
       titlePrizes[formKey].each(function (i, e) {
         let title = $(e).text().trim()
-        // const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
         const name = $(e).find('.offer-title').text().trim()
         if (title) {
-          const image = getLinkByName(links, name)
-          const chance = image ? 0.0001 : defaultChance
-          console.log(chance)
+          const { image, chance: drop } = getByName(links, name)
           if (!prizes[formKey]) prizes[formKey] = []
-          // let c = typeof (wheelColors) != 'undefined' && wheelColors !== null && wheelColors[i] ? wheelColors[i] : generateColor()
+          const chance = drop ? drop : defaultChance
           const c = wheelColors[i % wheelColors.length]
           prizes[formKey].push({ text: title, color: c, chance, image })
         }
@@ -240,7 +241,6 @@ $(document).ready(function () {
     // функция выбора призового сектора
     const selectPrize = () => {
       selected = selectSector(prizes[formKey])
-      console.log('selected', selected)
       prizeNodes[formKey][selected].classList.add(selectedClass)
       setPrize(selected)
     }
@@ -249,7 +249,6 @@ $(document).ready(function () {
     const setPrize = (selected) => {
       if (titlePrizes[formKey].length > 0) {
         let selectedTitle = $(prizeNodes[formKey][selected]).text().trim()
-        console.log('selectedTitle', selectedTitle)
         titlePrizes[formKey].each(function (i, e) {
           let title = $(e).text().trim()
           if (title === selectedTitle) {
@@ -270,7 +269,7 @@ $(document).ready(function () {
       // задаем дополнительное количество оборотов
       const rotates =  (spinertia(3, 9) * 360)
       // задаём начальное вращение колеса
-      rotation[formKey] = spinertia(prizeSlice[formKey] * selected, prizeSlice[formKey] * maxPrizeSlice - 2) + rotates
+      rotation[formKey] = spinertia(prizeSlice[formKey] * selected + 4, prizeSlice[formKey] * maxPrizeSlice - 4) + rotates
       // убираем прошлый приз
       prizeNodes[formKey].forEach((prize) => prize.classList.remove(selectedClass))
       // добавляем колесу класс is-spinning, с помощью которого реализуем нужную отрисовку
