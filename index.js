@@ -10,7 +10,7 @@ function generateColor() {
   return '#' + x16color
 }
 
-const audio = new Audio('tick.mp3')  // Create audio object and load desired file.
+const audio = new Audio('https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/337/h/3afac3bf39dd2f7241deea15a668e717.mp3')  // Create audio object and load desired file.
 
 const mod = (n, m) => (n % m + m) % m
 
@@ -117,7 +117,7 @@ $(document).ready(function () {
     //заполняем призы и добавляем рандомные цвета
     titlePrizes[formKey] = form[formKey].find(titlePrizesSelector)
     if (titlePrizes[formKey].length > 0) {
-      const defaultChance = Math.floor(100 / titlePrizes[formKey].length)
+      const defaultChance = Math.floor(100 / (titlePrizes[formKey].length - links.length))
       titlePrizes[formKey].each(function (i, e) {
         let title = $(e).text().trim()
         // const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
