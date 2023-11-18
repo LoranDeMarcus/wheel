@@ -113,8 +113,8 @@
 .prize::before {
   content: '';
   position: absolute;
-  bottom: calc(var(--size) / 12.7);
-  left: calc(var(--size) / 220);
+  bottom: calc(var(--size) / 12.79);
+  left: calc(var(--size) / 320);
   width: calc(var(--size) / 28);
   height: calc(var(--size) / 28);
   border-radius: 50%;
