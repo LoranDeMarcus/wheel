@@ -25,23 +25,28 @@ function playSound() {
 
 const links = [
   {
-    name: 'Шоколад',
+    name: 'Шоколад Callebaut молочный 2,5 кг.',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/236/h/84f3c166be3e11ce35acfaa61556756a.png',
     chance: 0.0001,
   },
   {
     name: 'iPhone 15',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/136/h/d66ac740562146140c9cf815a13c3ddf.png',
-    chance: 0.2,
-  },
-  {
-    name: 'Миксер',
-    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/52/h/1fe3825e90934c86047c2bb4286b309a.png',
     chance: 0.0001,
   },
   {
-    name: 'Планетарный миксер',
+    name: 'Планетарный миксер Kitfort',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/101/h/db86244dd68019151f9352bccf47d073.png',
+    chance: 0.0001,
+  },
+  {
+    name: 'Сертификат Тортомастер на 1000 рублей',
+    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/139/h/4bcc1e22b5e6968e742f1720b5ad1508.png',
+    chance: 0.0001,
+  },
+  {
+    name: 'Сертификат Тортомастер на 500 рублей',
+    link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/463/h/af58569e4222160743a0961b5367d1d2.png',
     chance: 0.0001,
   },
 ]
@@ -120,10 +125,43 @@ $(document).ready(function () {
 
     //заполняем призы и добавляем рандомные цвета
     titlePrizes[formKey] = form[formKey].find(titlePrizesSelector)
+    // меняем порядок
+    if (titlePrizes[formKey].length === 12) {
+      titlePrizes[formKey] = [
+        titlePrizes[formKey][0],
+        titlePrizes[formKey][2],
+        titlePrizes[formKey][4],
+        titlePrizes[formKey][6],
+        titlePrizes[formKey][8],
+        titlePrizes[formKey][10],
+        titlePrizes[formKey][1],
+        titlePrizes[formKey][3],
+        titlePrizes[formKey][5],
+        titlePrizes[formKey][7],
+        titlePrizes[formKey][9],
+        titlePrizes[formKey][11],
+      ]
+    }
+    if (titlePrizes[formKey].length === 11) {
+      titlePrizes[formKey] = [
+        titlePrizes[formKey][0],
+        titlePrizes[formKey][2],
+        titlePrizes[formKey][4],
+        titlePrizes[formKey][6],
+        titlePrizes[formKey][8],
+        titlePrizes[formKey][10],
+        titlePrizes[formKey][1],
+        titlePrizes[formKey][3],
+        titlePrizes[formKey][5],
+        titlePrizes[formKey][7],
+        titlePrizes[formKey][9],
+      ]
+    }
     if (titlePrizes[formKey].length > 0) {
       const defaultChance = Math.floor(100 / (titlePrizes[formKey].length - links.length))
-      titlePrizes[formKey].each(function (i, e) {
+      titlePrizes[formKey].forEach(function (e, i) {
         let title = $(e).text().trim()
+        // const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
         const name = $(e).find('.offer-title').text().trim()
         if (title) {
           const { image, chance: drop } = getByName(links, name)
@@ -249,7 +287,7 @@ $(document).ready(function () {
     const setPrize = (selected) => {
       if (titlePrizes[formKey].length > 0) {
         let selectedTitle = $(prizeNodes[formKey][selected]).text().trim()
-        titlePrizes[formKey].each(function (i, e) {
+        titlePrizes[formKey].forEach(function (e, i) {
           let title = $(e).text().trim()
           if (title === selectedTitle) {
             $(e).trigger('click')

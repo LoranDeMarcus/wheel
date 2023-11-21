@@ -113,8 +113,8 @@
 .prize::before {
   content: '';
   position: absolute;
-  bottom: calc(var(--size) / 12.79);
-  left: calc(var(--size) / 320);
+  bottom: calc(var(--size) / 10.05);
+  right: calc(var(--size) * 0.469);
   width: calc(var(--size) / 28);
   height: calc(var(--size) / 28);
   border-radius: 50%;
@@ -124,8 +124,8 @@
 .prize::after {
   content: '';
   position: absolute;
-  bottom: calc(var(--size) / 12);
-  left: calc(var(--size) / 120);
+  bottom: calc(var(--size) / 9.5);
+  left: calc(var(--size) * 0.);
   width: calc(var(--size) / 40);
   height: calc(var(--size) / 40);
   border-radius: 50%;
