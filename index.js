@@ -129,30 +129,30 @@ $(document).ready(function () {
     if (titlePrizes[formKey].length === 12) {
       titlePrizes[formKey] = [
         titlePrizes[formKey][0],
-        titlePrizes[formKey][2],
-        titlePrizes[formKey][4],
-        titlePrizes[formKey][6],
-        titlePrizes[formKey][8],
-        titlePrizes[formKey][10],
         titlePrizes[formKey][1],
+        titlePrizes[formKey][9],
+        titlePrizes[formKey][2],
+        titlePrizes[formKey][10],
         titlePrizes[formKey][3],
+        titlePrizes[formKey][6],
+        titlePrizes[formKey][4],
+        titlePrizes[formKey][8],
         titlePrizes[formKey][5],
         titlePrizes[formKey][7],
-        titlePrizes[formKey][9],
         titlePrizes[formKey][11],
       ]
     }
     if (titlePrizes[formKey].length === 11) {
       titlePrizes[formKey] = [
         titlePrizes[formKey][0],
-        titlePrizes[formKey][2],
-        titlePrizes[formKey][4],
-        titlePrizes[formKey][6],
-        titlePrizes[formKey][8],
-        titlePrizes[formKey][10],
         titlePrizes[formKey][1],
+        titlePrizes[formKey][9],
+        titlePrizes[formKey][2],
+        titlePrizes[formKey][10],
         titlePrizes[formKey][3],
-        titlePrizes[formKey][5],
+        titlePrizes[formKey][6],
+        titlePrizes[formKey][4],
+        titlePrizes[formKey][8],
         titlePrizes[formKey][7],
         titlePrizes[formKey][9],
       ]
