@@ -169,7 +169,6 @@ $(document).ready(function () {
           if (!prizes[formKey]) prizes[formKey] = []
           // const chance = drop ? Math.floor((drop * 100) / totalChances) : defaultChance
           const chance = drop ? Math.floor(drop * 100) : defaultChance
-          console.log(title, chance)
           const c = wheelColors[i % wheelColors.length]
           prizes[formKey].push({ text: title, color: c, chance, image })
         }
