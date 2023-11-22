@@ -27,7 +27,7 @@ const links = [
   {
     name: 'Шоколад Callebaut молочный 2,5 кг.',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/236/h/84f3c166be3e11ce35acfaa61556756a.png',
-    chance: 0.0001,
+    chance: 0.6,
   },
   {
     name: 'iPhone 15',
@@ -37,17 +37,17 @@ const links = [
   {
     name: 'Планетарный миксер Kitfort',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/101/h/db86244dd68019151f9352bccf47d073.png',
-    chance: 0.0001,
+    chance: 0.2,
   },
   {
     name: 'Сертификат Тортомастер на 1000 рублей',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/139/h/4bcc1e22b5e6968e742f1720b5ad1508.png',
-    chance: 0.0001,
+    chance: 0.3,
   },
   {
     name: 'Сертификат Тортомастер на 500 рублей',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/463/h/af58569e4222160743a0961b5367d1d2.png',
-    chance: 0.0001,
+    chance: 0.4,
   },
 ]
 
@@ -153,12 +153,13 @@ $(document).ready(function () {
         titlePrizes[formKey][6],
         titlePrizes[formKey][4],
         titlePrizes[formKey][8],
+        titlePrizes[formKey][5],
         titlePrizes[formKey][7],
-        titlePrizes[formKey][9],
       ]
     }
     if (titlePrizes[formKey].length > 0) {
       const defaultChance = Math.floor(100 / (titlePrizes[formKey].length - links.length))
+      const totalChances = links.reduce((sum, item) => sum + (item.chance || defaultChance), 0)
       titlePrizes[formKey].forEach(function (e, i) {
         let title = $(e).text().trim()
         // const chance = $(e).siblings('.pull-left.form-position-checker').find('.form-position-input').data('price-delimiter')
@@ -166,7 +167,9 @@ $(document).ready(function () {
         if (title) {
           const { image, chance: drop } = getByName(links, name)
           if (!prizes[formKey]) prizes[formKey] = []
-          const chance = drop ? drop : defaultChance
+          // const chance = drop ? Math.floor((drop * 100) / totalChances) : defaultChance
+          const chance = drop ? Math.floor(drop * 100) : defaultChance
+          console.log(title, chance)
           const c = wheelColors[i % wheelColors.length]
           prizes[formKey].push({ text: title, color: c, chance, image })
         }
@@ -305,7 +308,7 @@ $(document).ready(function () {
       // расчитываем максимальное число диапазона сектора
       const maxPrizeSlice = selected >= prizeNodes[formKey].length ? 0 : selected + 1
       // задаем дополнительное количество оборотов
-      const rotates =  (spinertia(3, 9) * 360)
+      const rotates = (spinertia(3, 9) * 360)
       // задаём начальное вращение колеса
       rotation[formKey] = spinertia(prizeSlice[formKey] * selected + 4, prizeSlice[formKey] * maxPrizeSlice - 4) + rotates
       // убираем прошлый приз
