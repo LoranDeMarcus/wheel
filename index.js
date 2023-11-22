@@ -27,7 +27,7 @@ const links = [
   {
     name: 'Шоколад Callebaut молочный 2,5 кг.',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/236/h/84f3c166be3e11ce35acfaa61556756a.png',
-    chance: 0.6,
+    chance: 0.0001,
   },
   {
     name: 'iPhone 15',
@@ -37,17 +37,17 @@ const links = [
   {
     name: 'Планетарный миксер Kitfort',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/101/h/db86244dd68019151f9352bccf47d073.png',
-    chance: 0.2,
+    chance: 0.0001,
   },
   {
     name: 'Сертификат Тортомастер на 1000 рублей',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/139/h/4bcc1e22b5e6968e742f1720b5ad1508.png',
-    chance: 0.3,
+    chance: 0.0001,
   },
   {
     name: 'Сертификат Тортомастер на 500 рублей',
     link: 'https://fs.getcourse.ru/fileservice/file/download/a/30899/sc/463/h/af58569e4222160743a0961b5367d1d2.png',
-    chance: 0.4,
+    chance: 0.0001,
   },
 ]
 
@@ -167,8 +167,7 @@ $(document).ready(function () {
         if (title) {
           const { image, chance: drop } = getByName(links, name)
           if (!prizes[formKey]) prizes[formKey] = []
-          // const chance = drop ? Math.floor((drop * 100) / totalChances) : defaultChance
-          const chance = drop ? Math.floor(drop * 100) : defaultChance
+          const chance = drop ? drop < 0.1 ? drop : Math.floor((drop * 100) / totalChances) : defaultChance
           const c = wheelColors[i % wheelColors.length]
           prizes[formKey].push({ text: title, color: c, chance, image })
         }
